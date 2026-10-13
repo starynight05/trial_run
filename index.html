@@ -1,0 +1,258 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trial_run | Number Grapes</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f7f0ff;
+            color: #32164d;
+            text-align: center;
+        }
+
+        header {
+            background: #7136a8;
+            color: white;
+            padding: 28px 16px;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+        }
+
+        header p {
+            margin-bottom: 0;
+            color: #f0dfff;
+        }
+
+        main {
+            padding: 35px 16px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .instructions {
+            color: #6b5680;
+            margin-bottom: 30px;
+        }
+
+        .grape-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            max-width: 700px;
+            margin: 0 auto 35px;
+        }
+
+        .grape {
+            background: white;
+            border: 3px solid #e0c8f5;
+            border-radius: 20px;
+            width: 105px;
+            min-height: 125px;
+            cursor: pointer;
+            color: #32164d;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 5px 12px #32164d12;
+        }
+
+        .grape:hover {
+            transform: translateY(-6px);
+            background: #f0e2ff;
+        }
+
+        .grape:focus-visible {
+            outline: 3px solid #7136a8;
+            outline-offset: 4px;
+        }
+
+        .grape.selected {
+            border-color: #7136a8;
+            background: #ead7ff;
+            transform: translateY(-5px);
+        }
+
+        .grape-icon {
+            display: block;
+            font-size: 3.2rem;
+            margin-bottom: 8px;
+        }
+
+        .info-card {
+            max-width: 500px;
+            min-height: 190px;
+            margin: 0 auto;
+            padding: 25px;
+            background: white;
+            border-radius: 22px;
+            box-shadow: 0 8px 25px #32164d12;
+            border: 2px solid #ead7ff;
+        }
+
+        .info-card h3 {
+            font-size: 1.5rem;
+            margin: 0 0 12px;
+        }
+
+        .number-display {
+            font-size: 2.5rem;
+            color: #7136a8;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        #description {
+            line-height: 1.6;
+            color: #6b5680;
+        }
+
+        footer {
+            padding: 25px;
+            color: #806b91;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 420px) {
+            .grape-container {
+                gap: 10px;
+            }
+
+            .grape {
+                width: 85px;
+                min-height: 110px;
+            }
+
+            .grape-icon {
+                font-size: 2.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>🍇 trial_run</h1>
+        <p>A little adventure with numbers!</p>
+    </header>
+
+    <main>
+        <h2>Explore the Five Grapes</h2>
+        <p class="instructions">
+            Click a grape to discover something about its number.
+        </p>
+
+        <div class="grape-container" aria-label="Choose a number">
+            <button class="grape" data-number="1" aria-pressed="false">
+                <span class="grape-icon" aria-hidden="true">🍇</span>
+                Grape 1
+            </button>
+
+            <button class="grape" data-number="2" aria-pressed="false">
+                <span class="grape-icon" aria-hidden="true">🍇</span>
+                Grape 2
+            </button>
+
+            <button class="grape" data-number="3" aria-pressed="false">
+                <span class="grape-icon" aria-hidden="true">🍇</span>
+                Grape 3
+            </button>
+
+            <button class="grape" data-number="4" aria-pressed="false">
+                <span class="grape-icon" aria-hidden="true">🍇</span>
+                Grape 4
+            </button>
+
+            <button class="grape" data-number="5" aria-pressed="false">
+                <span class="grape-icon" aria-hidden="true">🍇</span>
+                Grape 5
+            </button>
+        </div>
+
+        <section class="info-card" aria-live="polite">
+            <h3 id="info-title">Welcome to trial_run!</h3>
+            <div class="number-display" id="number-display">?</div>
+            <p id="description">
+                Pick any grape above to learn about its number.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        Made with 💜 for curious minds · trial_run
+    </footer>
+
+    <script>
+        const numberInfo = {
+            1: {
+                title: "Number One",
+                description:
+                    "1 is the first positive whole number. It represents one single thing. It is neither prime nor composite."
+            },
+            2: {
+                title: "Number Two",
+                description:
+                    "2 is the only even prime number. It comes after 1 and before 3. Two eyes, two ears!"
+            },
+            3: {
+                title: "Number Three",
+                description:
+                    "3 is a prime number and an odd number. It comes after 2. Think of three little grapes!"
+            },
+            4: {
+                title: "Number Four",
+                description:
+                    "4 is an even number and a composite number. It equals 2 × 2. A square has four sides!"
+            },
+            5: {
+                title: "Number Five",
+                description:
+                    "5 is an odd number and a prime number. It is the number of fingers on one hand!"
+            }
+        };
+
+        const grapes = document.querySelectorAll(".grape");
+        const title = document.getElementById("info-title");
+        const display = document.getElementById("number-display");
+        const description = document.getElementById("description");
+
+        grapes.forEach(function(grape) {
+            grape.addEventListener("click", function() {
+                const number = Number(grape.dataset.number);
+                const info = numberInfo[number];
+
+                title.textContent = info.title;
+                display.textContent = number;
+                description.textContent = info.description;
+
+                grapes.forEach(function(item) {
+                    const isSelected = item === grape;
+
+                    item.classList.toggle("selected", isSelected);
+                    item.setAttribute(
+                        "aria-pressed",
+                        String(isSelected)
+                    );
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
